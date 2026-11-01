@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$shawesome_admin_version = '1.0.1';
+$shawesome_admin_version = '1.0.2';
 
 if ( ! isset( $GLOBALS['shawesome_admin'] ) || version_compare( $shawesome_admin_version, $GLOBALS['shawesome_admin']['version'], '>' ) ) {
 	$GLOBALS['shawesome_admin'] = array(
