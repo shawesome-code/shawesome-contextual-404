@@ -1,0 +1,181 @@
+# Translation template for shawesome Contextual 404.
+# Copyright (C) shawesome
+# This file is distributed under the same license as the plugin (GPL-2.0-or-later).
+msgid ""
+msgstr ""
+"Project-Id-Version: shawesome Contextual 404 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/shawesome-code/shawesome-contextual-404/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: shawesome-contextual-404\n"
+
+#. Plugin Name of the plugin
+msgid "shawesome Contextual 404 – Different 404 Pages by Post Type and URL"
+msgstr ""
+
+#. Description of the plugin
+msgid "Shows a different 404 page depending on the requested URL: by post type, by taxonomy or by your own path rules. 404 pages are edited with the block editor or Elementor."
+msgstr ""
+
+msgid "404 Pages"
+msgstr ""
+
+msgid "404 Page"
+msgstr ""
+
+msgid "404 page"
+msgstr ""
+
+msgid "Add 404 Page"
+msgstr ""
+
+msgid "Edit 404 Page"
+msgstr ""
+
+msgid "No 404 pages found."
+msgstr ""
+
+msgid "Contextual 404"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Sorry, you are not allowed to manage options for this site."
+msgstr ""
+
+msgid "404 Log"
+msgstr ""
+
+msgid "Rule: %s"
+msgstr ""
+
+msgid "Total: %s"
+msgstr ""
+
+msgid "Other categories"
+msgstr ""
+
+msgid "Other URLs"
+msgstr ""
+
+msgid "No 404 errors recorded."
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Count 404 errors"
+msgstr ""
+
+msgid "Delete statistics"
+msgstr ""
+
+msgid "Statistics deleted."
+msgstr ""
+
+msgid "Deletes the counted 404 errors of all months. This cannot be undone."
+msgstr ""
+
+msgid "Delete the statistics of all months? This cannot be undone."
+msgstr ""
+
+msgid "Counting is switched off, so no new 404 errors are recorded."
+msgstr ""
+
+msgid "All months"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Shows the 100 most frequent URLs. Sorting only changes the order of these URLs."
+msgstr ""
+
+msgid "Most frequent URLs"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Hits"
+msgstr ""
+
+msgid "404 Errors"
+msgstr ""
+
+msgid "View all months"
+msgstr ""
+
+msgid "Add rule"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Drag to sort"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Use default"
+msgstr ""
+
+msgid "Theme 404 page"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "Settings saved. Path rules with an invalid regular expression or without a 404 page were removed."
+msgstr ""
+
+msgid "Create your first 404 page"
+msgstr ""
+
+msgid "Post types"
+msgstr ""
+
+msgid "Pages match URLs below an existing page, post types match their URL prefix, their archive and their taxonomies."
+msgstr ""
+
+msgid "With the permalink structure /%postname%/, a URL such as /xyz does not reveal whether a post or a page was requested, so it ends up here."
+msgstr ""
+
+msgid "Path rules"
+msgstr ""
+
+msgid "Path rules come first, the first match wins. A prefix such as shop/sale matches this path and everything below it. A regular expression is entered without delimiters, ignores case and is matched against the path with a leading slash, e.g. ^/(sale|offers)/. The language prefix is not part of the path."
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Pattern"
+msgstr ""
+
+msgid "Prefix"
+msgstr ""
+
+msgid "Regular expression"
+msgstr ""
+
+msgid "Select"
+msgstr ""
