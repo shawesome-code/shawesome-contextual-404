@@ -38,7 +38,7 @@ The response keeps the status 404 and carries an `X-Robots-Tag: noindex` header.
 
 **Languages**
 
-404 pages can be translated with WPML and Polylang. Select a 404 page in any language, the plugin shows its translation in the current language. Language prefixes are not part of the paths in your rules. The language switcher leads to the home page of a language.
+404 pages can be translated with Polylang. Select a 404 page in any language, the plugin shows its translation in the current language. Language prefixes are not part of the paths in your rules. The language switcher leads to the home page of a language.
 
 **Statistics**
 

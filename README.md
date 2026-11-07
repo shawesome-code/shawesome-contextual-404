@@ -26,7 +26,7 @@ The main query is replaced by the 404 page, so that themes and page builders ren
 
 A table holds one row per month and URL with a counter, so repeated errors do not add rows. Only the percent-encoded path is stored, without query string, IP address, user agent or referrer. A month holds up to 1,000 rows; beyond that, new URLs are only counted by category. Older months are deleted. Counting can be switched off in the settings, the statistics can be deleted in the log.
 
-## WPML and Polylang
+## Polylang
 
 404 pages are translatable. The translation in the current language is shown, language prefixes are not part of the paths in the rules, and the language switcher leads to the home page of a language.
 

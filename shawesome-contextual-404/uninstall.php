@@ -43,8 +43,8 @@ if ( is_multisite() ) {
 			'number' => 0,
 			'fields' => 'ids',
 		)
-	) as $site_id ) {
-		switch_to_blog( $site_id );
+	) as $shawesome_c404_site_id ) {
+		switch_to_blog( $shawesome_c404_site_id );
 		shawesome_c404_uninstall_site();
 		restore_current_blog();
 	}

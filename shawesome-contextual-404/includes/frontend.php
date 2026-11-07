@@ -43,11 +43,10 @@ function shawesome_c404_run_core_redirects() {
 function shawesome_c404_replace_query( $page_id ) {
 	$query = new WP_Query(
 		array(
-			'p'                => $page_id,
-			'post_type'        => SHAWESOME_C404_POST_TYPE,
-			'no_found_rows'    => true,
-			'suppress_filters' => true, // WPML: the page may be a fallback in another language.
-			'lang'             => '', // Polylang: the same.
+			'p'             => $page_id,
+			'post_type'     => SHAWESOME_C404_POST_TYPE,
+			'no_found_rows' => true,
+			'lang'          => '', // Polylang: the page may be a fallback in another language.
 		)
 	);
 
