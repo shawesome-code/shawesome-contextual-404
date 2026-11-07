@@ -16,15 +16,15 @@ By [shawesome](https://shawesome.de/) · Open source under the [GNU General Publ
 4. **Parent pages** – URLs below an existing page belong to the post type Pages
 5. **Default** – the page selected as the default, otherwise the 404 page of the theme
 
-With the permalink structure `/%postname%/`, a URL such as `/xyz` does not reveal whether a post or a page was requested, so the default applies.
+With the permalink structure `/%postname%/`, a URL such as `/xyz` does not reveal whether a post or a page was requested, so the default applies. A URL test in the settings runs the same resolver with the unsaved values.
 
 The main query is replaced by the 404 page, so that themes and page builders render it like any other page. The status stays 404, the response carries `X-Robots-Tag: noindex`, and while the `<head>` is printed the query reports a 404, so that SEO plugins handle the request as an error page.
 
 ## Statistics
 
-404 errors are counted per month, by the path rule or post type that applied, otherwise as "Default". A dashboard widget shows a pie chart of the current month, the tab *404 Log* shows the last 12 months, together or one by one, with the most frequent URLs.
+404 errors are counted per month, by the path rule or post type that applied, otherwise as "Default". A dashboard widget shows the current month as a bar by category, the tab *404 Log* shows the last 12 months, together or one by one, with the most frequent URLs.
 
-A table holds one row per month and URL with a counter, so repeated errors do not add rows. Only the percent-encoded path is stored, without query string, IP address, user agent or referrer. A month holds up to 1,000 rows; beyond that, new URLs are only counted by category. Older months are deleted. Counting can be switched off and the statistics can be deleted in the settings.
+A table holds one row per month and URL with a counter, so repeated errors do not add rows. Only the percent-encoded path is stored, without query string, IP address, user agent or referrer. A month holds up to 1,000 rows; beyond that, new URLs are only counted by category. Older months are deleted. Counting can be switched off in the settings, the statistics can be deleted in the log.
 
 ## WPML and Polylang
 
@@ -37,11 +37,10 @@ A table holds one row per month and URL with a counter, so repeated errors do no
 - Table `{prefix}shawesome_c404_log` – statistics
 - Template `single-shawesome_404.php` in a theme – replaces the page template for 404 pages
 - Option `shawesome_c404_settings` – assignments and path rules
-- Admin menu `shawesome` with its start page – shared by all shawesome plugins, see [shawesome-wordpress-admin](https://github.com/shawesome-code/shawesome-wordpress-admin)
 
 ## Requirements
 
-- WordPress 7.1+
+- WordPress 6.4+
 - PHP 7.4+
 
 The interface is in English. Translations will come from [translate.wordpress.org](https://translate.wordpress.org/) once the plugin is listed in the directory.
@@ -52,7 +51,7 @@ Copy the folder `shawesome-contextual-404/` to `wp-content/plugins/` (or upload 
 
 ## Repository layout
 
-- `shawesome-contextual-404/` – the plugin (translation template in `languages/`, shared admin code as a git subtree in `includes/shawesome-wordpress-admin/`)
+- `shawesome-contextual-404/` – the plugin (translation template in `languages/`)
 - `.wordpress-org/` – plugin directory assets (banners, icons)
 
 ## License

@@ -116,7 +116,7 @@ function shawesome_c404_template_redirect() {
 	shawesome_c404_run_core_redirects();
 
 	$path  = shawesome_c404_get_path();
-	$match = shawesome_c404_find_match( $path, $wp_query->query );
+	$match = shawesome_c404_find_match( $path, $wp_query->query, shawesome_c404_get_settings() );
 
 	shawesome_c404_log_request( $path, $match['category'] );
 

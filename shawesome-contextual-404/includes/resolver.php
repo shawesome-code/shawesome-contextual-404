@@ -23,8 +23,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 function shawesome_c404_get_path() {
 	global $wp;
 
-	$path     = strtolower( trim( rawurldecode( (string) $wp->request ), '/' ) );
-	$language = strtolower( shawesome_c404_current_language() );
+	return shawesome_c404_strip_language( shawesome_c404_normalize_path( (string) $wp->request ), shawesome_c404_current_language() );
+}
+
+/**
+ * Path as the rules see it: decoded, lower case, without slashes around it.
+ *
+ * @param string $path Path relative to the home URL.
+ * @return string
+ */
+function shawesome_c404_normalize_path( $path ) {
+	return strtolower( trim( rawurldecode( $path ), '/' ) );
+}
+
+/**
+ * Remove a language prefix from a path.
+ *
+ * @param string $path     Normalized path.
+ * @param string $language Language slug, empty for none.
+ * @return string
+ */
+function shawesome_c404_strip_language( $path, $language ) {
+	$language = strtolower( $language );
 
 	if ( '' !== $language && shawesome_c404_path_is_within( $path, $language ) ) {
 		$path = ltrim( substr( $path, strlen( $language ) ), '/' );
@@ -57,6 +77,16 @@ function shawesome_c404_regex( $pattern ) {
 }
 
 /**
+ * Whether the pattern of a path rule is a valid regular expression.
+ *
+ * @param string $pattern Pattern without delimiters.
+ * @return bool
+ */
+function shawesome_c404_regex_is_valid( $pattern ) {
+	return false !== @preg_match( shawesome_c404_regex( $pattern ), '' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+}
+
+/**
  * First matching path rule. Regular expressions are matched against the path
  * with a leading slash.
  *
@@ -79,6 +109,35 @@ function shawesome_c404_match_path_rules( $rules, $path ) {
 	}
 
 	return null;
+}
+
+/**
+ * Query vars the rewrite rules give a path, like WP::parse_request() does for
+ * a request. Used to test a URL without requesting it.
+ *
+ * @param string $path Path relative to the home URL, with language prefix.
+ * @return array Public query vars.
+ */
+function shawesome_c404_query_vars_from_path( $path ) {
+	global $wp, $wp_rewrite;
+
+	foreach ( (array) $wp_rewrite->wp_rewrite_rules() as $match => $query ) {
+		if ( ! preg_match( "#^$match#", $path, $matches ) ) {
+			continue;
+		}
+
+		// A verbose page rule only applies if the page exists.
+		if ( $wp_rewrite->use_verbose_page_rules && preg_match( '/pagename=\$matches\[([0-9]+)\]/', $query, $page_match ) && ! get_page_by_path( $matches[ $page_match[1] ] ) ) {
+			continue;
+		}
+
+		parse_str( WP_MatchesMapRegex::apply( (string) preg_replace( '!^.+\?!', '', $query ), $matches ), $vars );
+
+		/** This filter is documented in wp-includes/class-wp.php */
+		return array_intersect_key( $vars, array_flip( apply_filters( 'query_vars', $wp->public_query_vars ) ) );
+	}
+
+	return array();
 }
 
 /**
@@ -178,9 +237,8 @@ function shawesome_c404_post_type_from_path( $path ) {
 function shawesome_c404_has_parent_page( $path ) {
 	$segments = array_slice( explode( '/', $path ), 0, 5 );
 
-	while ( count( $segments ) > 1 ) {
-		array_pop( $segments );
-		if ( get_page_by_path( implode( '/', $segments ) ) ) {
+	for ( $length = count( $segments ) - 1; $length > 0; $length-- ) {
+		if ( get_page_by_path( implode( '/', array_slice( $segments, 0, $length ) ) ) ) {
 			return true;
 		}
 	}
@@ -202,14 +260,13 @@ function shawesome_c404_is_404_page( $page_id ) {
  * 404 page configured for a path and the category the statistics count the
  * request in: the path rule or post type that applies, otherwise the default.
  *
- * @param string $path Requested path.
- * @param array  $vars Query vars of the main query before they were parsed.
+ * @param string $path     Requested path.
+ * @param array  $vars     Query vars of the main query before they were parsed.
+ * @param array  $settings Settings, see shawesome_c404_get_settings().
  * @return array{page: int, category: string} 404 page, 0 if none, and
  *               category 'rule:<pattern>', 'post_type:<name>' or 'default'.
  */
-function shawesome_c404_find_match( $path, $vars ) {
-	$settings = shawesome_c404_get_settings();
-
+function shawesome_c404_find_match( $path, $vars, $settings ) {
 	$rule = shawesome_c404_match_path_rules( $settings['paths'], $path );
 	if ( $rule ) {
 		return array(

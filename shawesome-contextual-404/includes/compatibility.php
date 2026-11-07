@@ -25,6 +25,19 @@ function shawesome_c404_current_language() {
 }
 
 /**
+ * Language slugs as used in URLs.
+ *
+ * @return string[] Empty without a multilingual plugin.
+ */
+function shawesome_c404_languages() {
+	if ( function_exists( 'pll_languages_list' ) ) {
+		return (array) pll_languages_list( array( 'fields' => 'slug' ) );
+	}
+
+	return array_keys( (array) apply_filters( 'wpml_active_languages', array() ) );
+}
+
+/**
  * Translation of a 404 page into the current language.
  *
  * @param int $page_id 404 page.
@@ -62,7 +75,7 @@ add_filter( 'pll_get_post_types', 'shawesome_c404_polylang_post_types' );
  * @return string
  */
 function shawesome_c404_polylang_translation_url( $url, $slug ) {
-	return is_singular( SHAWESOME_C404_POST_TYPE ) ? pll_home_url( $slug ) : $url;
+	return is_singular( SHAWESOME_C404_POST_TYPE ) && function_exists( 'pll_home_url' ) ? pll_home_url( $slug ) : $url;
 }
 add_filter( 'pll_translation_url', 'shawesome_c404_polylang_translation_url', 10, 2 );
 

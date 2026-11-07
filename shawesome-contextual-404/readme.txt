@@ -1,7 +1,7 @@
 === shawesome Contextual 404 – Different 404 Pages by Post Type and URL ===
 Contributors: shawesome
 Tags: 404, error page, post type, not found, multilingual
-Requires at least: 7.1
+Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
@@ -16,7 +16,7 @@ A missing product should lead to the shop, a missing blog post to the blog. shaw
 
 **404 pages**
 
-Create 404 pages under *shawesome → Contextual 404* in the tab *404 Pages*, with the block editor or with Elementor. They use the page template of your theme, so the title is shown as a heading. They have no public URL and are not part of the sitemaps of WordPress.
+Create 404 pages under *shawesome → Contextual 404* in the tab *404 Pages*, with the block editor or with Elementor. The column *Used for* shows where each page applies. They use the page template of your theme, so the title is shown as a heading. They have no public URL and are not part of the sitemaps of WordPress.
 
 **Assign them**
 
@@ -30,6 +30,8 @@ In the tab *Settings* you assign a 404 page to every public post type, and a def
 
 With the permalink structure `/%postname%/`, posts and pages both live in the root. A URL such as `/xyz` does not reveal what was requested, so the default applies.
 
+The field *Test URL* below the path rules shows which 404 page a URL would get, with the values not yet saved.
+
 **Search engines**
 
 The response keeps the status 404 and carries an `X-Robots-Tag: noindex` header. While the `<head>` is printed, WordPress reports a 404, so that SEO plugins handle the request as an error page.
@@ -40,15 +42,11 @@ The response keeps the status 404 and carries an `X-Robots-Tag: noindex` header.
 
 **Statistics**
 
-The plugin counts 404 errors per month, by the path rule or post type that applied, otherwise as "Default". A dashboard widget shows a pie chart of the current month, the tab *404 Log* shows the last 12 months, together or one by one, with the most frequent URLs. Older months are deleted.
+The plugin counts 404 errors per month, by the path rule or post type that applied, otherwise as "Default". A dashboard widget shows the current month as a bar by category, the tab *404 Log* shows the last 12 months, together or one by one, with the most frequent URLs. Older months are deleted.
 
 Only the path of a URL is stored, percent-encoded and without its query string, together with a counter. IP addresses, user agents and referrers are not stored. A month holds up to 1,000 rows; beyond that, new URLs are only counted by category. Requests answered by a page cache do not reach WordPress and are not counted.
 
-Counting can be switched off in the tab *Settings*, where the statistics can also be deleted.
-
-**The shawesome menu**
-
-All shawesome plugins share the *shawesome* menu. Its start page lists the active shawesome plugins and recommends others from the WordPress plugin directory, which WordPress queries for users who can install plugins.
+Counting can be switched off in the tab *Settings*. The statistics can be deleted in the tab *404 Log*.
 
 **For developers**
 
@@ -56,7 +54,6 @@ All shawesome plugins share the *shawesome* menu. Its start page lists the activ
 * Filter `shawesome_c404_log_limit` – change the number of rows a month holds.
 * Template `single-shawesome_404.php` in a theme – replaces the page template for 404 pages.
 * All callbacks are named functions and can be removed with `remove_action()` / `remove_filter()`.
-* The admin menu `shawesome` and its start page are shared code in `includes/shawesome-wordpress-admin/`.
 
 == Installation ==
 

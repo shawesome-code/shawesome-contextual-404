@@ -1,0 +1,106 @@
+/**
+ * shawesome Contextual 404 – styles of the plugin page, the list of 404 pages
+ * and the dashboard widget. Colors follow the WordPress admin palette.
+ */
+
+.sc404-version { margin-top: 0; color: #646970; }
+.sc404-tabs .nav-tab { white-space: nowrap; }
+.sc404-count { display: inline-block; margin-left: 4px; padding: 0 7px; border-radius: 9px; background: #dcdcde; color: #50575e; font-size: 11px; line-height: 18px; font-weight: 400; }
+.sc404-hint { color: #646970; }
+
+/* Cards */
+.sc404-wrap { max-width: 1200px; }
+.sc404-card { margin: 16px 0; background: #fff; border: 1px solid #c3c4c7; }
+.sc404-card__head { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f0f0f1; }
+.sc404-card__head h2 { margin: 0; font-size: 14px; font-weight: 600; }
+.sc404-card__head p { margin: 4px 0 0; color: #646970; font-size: 12px; }
+.sc404-card__body { padding: 14px 18px; }
+.sc404-card__foot { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding: 12px 18px; background: #f6f7f7; border-top: 1px solid #f0f0f1; }
+.sc404-card__foot p { flex: 1; min-width: 200px; margin: 0; color: #646970; }
+.sc404-section-head { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; margin: 16px 0; }
+.sc404-section-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.sc404-section-head p { margin: 4px 0 0; color: #646970; }
+
+/* Pills in the list of 404 pages */
+.sc404-pill { display: inline-block; margin: 0 4px 4px 0; padding: 2px 9px; border-radius: 10px; background: #f0f6fc; color: #135e96; font-size: 12px; white-space: nowrap; }
+.sc404-pill--warning { background: #fcf9e8; color: #614200; }
+.sc404-pill--warning a { color: inherit; }
+.post-type-shawesome_404 .wp-list-table .row-actions { position: static; }
+.post-type-shawesome_404 .post-state { padding: 1px 6px; border-radius: 2px; background: #f0f0f1; color: #50575e; font-size: 11px; font-weight: 400; }
+
+/* Settings: post types */
+.sc404-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.sc404-type { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid #f0f0f1; }
+.sc404-type > div { flex: 1; min-width: 180px; }
+.sc404-type label { font-weight: 600; }
+.sc404-type p { margin: 2px 0 0; color: #646970; font-size: 12px; }
+.sc404-type select { width: 100%; max-width: 320px; }
+
+/* Settings: path rules */
+.sc404-empty { margin: 0; padding: 14px 18px; color: #646970; }
+.sc404-rules { margin: 0; padding: 0; list-style: none; counter-reset: sc404-rule; }
+.sc404-rule { display: grid; grid-template-columns: 20px 28px 150px minmax(0, 1fr) minmax(160px, 220px) auto; gap: 10px; align-items: center; margin: 0; padding: 8px 18px; border-bottom: 1px solid #f0f0f1; background: #fff; counter-increment: sc404-rule; }
+.sc404-rule.is-invalid { background: #fcf0f1; }
+.sc404-rule.ui-sortable-helper { box-shadow: 0 2px 6px rgba(0, 0, 0, .15); }
+.sc404-handle { color: #8c8f94; cursor: move; }
+.sc404-rule__number::before { content: counter(sc404-rule); color: #646970; font-variant-numeric: tabular-nums; }
+.sc404-segment { display: inline-flex; margin: 0; padding: 0; border: 1px solid #2271b1; border-radius: 3px; overflow: hidden; }
+.sc404-segment label { position: relative; flex: 1; }
+.sc404-segment input { position: absolute; opacity: 0; }
+.sc404-segment span { display: block; padding: 3px 10px; color: #2271b1; text-align: center; cursor: pointer; }
+.sc404-segment label + label span { border-left: 1px solid #2271b1; }
+.sc404-segment input:checked + span { background: #2271b1; color: #fff; }
+.sc404-segment input:focus-visible + span { box-shadow: inset 0 0 0 2px #fff; outline: 2px solid #2271b1; }
+.sc404-pattern { display: flex; align-items: center; }
+.sc404-pattern input { flex: 1; min-width: 0; font-family: Consolas, Monaco, monospace; }
+.sc404-pattern__slash { padding: 0 8px; align-self: stretch; display: flex; align-items: center; border: 1px solid #8c8f94; border-right: 0; border-radius: 3px 0 0 3px; background: #f0f0f1; color: #646970; font-family: Consolas, Monaco, monospace; }
+.sc404-rule:not(.is-regex) .sc404-pattern input { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.sc404-rule.is-regex .sc404-pattern__slash { display: none; }
+.sc404-rule select { width: 100%; max-width: none; }
+.sc404-rule__actions { display: flex; gap: 4px; }
+.sc404-icon.button { width: 28px; min-height: 28px; height: 28px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.sc404-icon .dashicons { font-size: 16px; width: 16px; height: 16px; line-height: 16px; }
+.sc404-remove.button { color: #b32d2e; border-color: #b32d2e; }
+
+/* Settings: URL test */
+.sc404-test label { font-weight: 600; }
+.sc404-test input { width: 280px; max-width: 100%; font-family: Consolas, Monaco, monospace; }
+.sc404-result:not(:empty) { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; background: #edfaef; color: #00450c; }
+.sc404-result:not(:empty)::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #00a32a; }
+
+/* Settings: save bar */
+.sc404-savebar { position: sticky; bottom: 0; z-index: 10; display: flex; gap: 16px; align-items: center; justify-content: flex-end; margin: 16px 0 0; padding: 12px 18px; background: #fff; border-top: 1px solid #c3c4c7; box-shadow: 0 -2px 6px rgba(0, 0, 0, .04); }
+.sc404-status { margin-right: auto; color: #646970; }
+.sc404-status.is-dirty { color: #996800; }
+.sc404-status.is-dirty::before { content: "\25CF  "; }
+.sc404-discard { color: #b32d2e; }
+.sc404-discard:hover, .sc404-discard:focus { color: #8a2424; }
+
+/* Log */
+.sc404-total { margin: 0 0 10px; }
+.sc404-total strong { font-size: 28px; font-weight: 400; line-height: 1; }
+.sc404-bar { display: flex; height: 12px; border-radius: 2px; overflow: hidden; background: #f0f0f1; }
+.sc404-legend { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 12px 0 0; }
+.sc404-legend li { display: flex; gap: 6px; align-items: center; margin: 0; }
+.sc404-legend .sc404-num { color: #646970; }
+.sc404-swatch { display: inline-block; flex: none; width: 10px; height: 10px; border-radius: 2px; }
+.sc404-swatch--dot { margin-right: 6px; border-radius: 50%; width: 8px; height: 8px; }
+.sc404-num { font-variant-numeric: tabular-nums; }
+.sc404-table-wrap { overflow-x: auto; }
+.sc404-urls { width: 100%; min-width: 560px; border-collapse: collapse; }
+.sc404-urls th, .sc404-urls td { padding: 8px 18px; text-align: left; border-bottom: 1px solid #f0f0f1; }
+.sc404-urls th:nth-child(2) { width: 22%; }
+.sc404-urls th:nth-child(3), .sc404-urls td.sc404-num { width: 80px; text-align: right; }
+.sc404-urls thead td { width: 130px; }
+.sc404-urls th a { display: inline-flex; gap: 2px; align-items: center; text-decoration: none; }
+.sc404-urls th.sorted a { color: #1d2327; }
+.sc404-url { max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sc404-url code { background: none; padding: 0; font-family: Consolas, Monaco, monospace; }
+.sc404-button-danger.button { color: #b32d2e; border-color: #b32d2e; }
+.sc404-button-danger.button:hover, .sc404-button-danger.button:focus { color: #8a2424; border-color: #8a2424; background: #fcf0f1; }
+
+@media screen and (max-width: 782px) {
+	.sc404-rule { grid-template-columns: 20px 20px minmax(0, 1fr); }
+	.sc404-pattern, .sc404-rule select, .sc404-rule__actions { grid-column: 2 / -1; }
+	.sc404-icon.button { width: 40px; height: 40px; }
+}

@@ -4,7 +4,7 @@
  * Plugin URI:          https://github.com/shawesome-code/shawesome-contextual-404
  * Description:         Shows a different 404 page depending on the requested URL: by post type, by taxonomy or by your own path rules. 404 pages are edited with the block editor or Elementor.
  * Version:             1.0.0
- * Requires at least:   7.1
+ * Requires at least:   6.4
  * Requires PHP:        7.4
  * Author:              shawesome
  * Author URI:          https://shawesome.de/
@@ -79,6 +79,7 @@ function shawesome_c404_register_post_type() {
 				'singular_name' => __( '404 Page', 'shawesome-contextual-404' ),
 				'add_new_item'  => __( 'Add 404 Page', 'shawesome-contextual-404' ),
 				'edit_item'     => __( 'Edit 404 Page', 'shawesome-contextual-404' ),
+				'search_items'  => __( 'Search 404 Pages', 'shawesome-contextual-404' ),
 				'not_found'     => __( 'No 404 pages found.', 'shawesome-contextual-404' ),
 			),
 			'public'              => false,

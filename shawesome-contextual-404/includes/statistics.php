@@ -1,7 +1,7 @@
 <?php
 /**
- * Admin: pie chart of the 404 errors, the tab 404 Log and the dashboard
- * widget.
+ * Admin: bar of the 404 errors by category, the tab 404 Log and the
+ * dashboard widget.
  *
  * @package Shawesome_Contextual_404
  */
@@ -34,98 +34,91 @@ function shawesome_c404_category_label( $category ) {
 }
 
 /**
- * Slices of the pie chart: at most six, as more cannot be told apart.
+ * Group of a category in the bar: all path rules form one group.
  *
- * @param array[] $categories Rows with category and hits, the most frequent first.
- * @return array[] Slices with label, hits and color.
- */
-function shawesome_c404_chart_slices( $categories ) {
-	$colors = array( '#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300' );
-	$others = 6 < count( $categories ) ? array_splice( $categories, 5 ) : array();
-	$slices = array();
-
-	foreach ( array_values( $categories ) as $index => $row ) {
-		$slices[] = array(
-			'label' => shawesome_c404_category_label( $row['category'] ),
-			'hits'  => (int) $row['hits'],
-			'color' => $colors[ $index ],
-		);
-	}
-
-	if ( $others ) {
-		$slices[] = array(
-			'label' => __( 'Other categories', 'shawesome-contextual-404' ),
-			'hits'  => (int) array_sum( wp_list_pluck( $others, 'hits' ) ),
-			'color' => '#787774',
-		);
-	}
-
-	return $slices;
-}
-
-/**
- * SVG path of a slice of the pie, which starts at 12 o'clock and runs
- * clockwise. A path cannot draw a full circle.
- *
- * @param float $start Start as a share of the circle, from 0 to 1.
- * @param float $end   End as a share of the circle, from 0 to 1.
+ * @param string $category Category.
  * @return string
  */
-function shawesome_c404_slice_path( $start, $end ) {
-	$point = function ( $share ) {
-		$angle = 2 * M_PI * $share - M_PI / 2;
-
-		return sprintf( '%.3F %.3F', 50 + 49.8 * cos( $angle ), 50 + 49.8 * sin( $angle ) );
-	};
-
-	return sprintf( 'M 50 50 L %s A 49.8 49.8 0 %d 1 %s Z', $point( $start ), $end - $start > 0.5 ? 1 : 0, $point( $end ) );
+function shawesome_c404_category_group( $category ) {
+	return 0 === strpos( $category, 'rule:' ) ? 'rule' : $category;
 }
 
 /**
- * Render the pie chart with its legend. A thin stroke in the color of a slice
- * covers the seam that antialiasing leaves between adjacent slices.
+ * Segments of the bar, the most frequent first. Default, posts, pages and
+ * path rules have fixed colors, other post types get the extra colors; what
+ * is left forms "Other categories".
  *
- * @param array[] $categories Rows with category and hits, the most frequent first.
+ * @param array[] $categories Rows with category and hits.
+ * @return array<string, array{label: string, hits: int, color: string}> Group => segment.
  */
-function shawesome_c404_render_chart( $categories ) {
-	$total = (int) array_sum( wp_list_pluck( $categories, 'hits' ) );
+function shawesome_c404_chart_segments( $categories ) {
+	$fixed  = array(
+		'default'        => '#2271b1',
+		'post_type:post' => '#d63638',
+		'post_type:page' => '#dba617',
+		'rule'           => '#00a32a',
+	);
+	$extra  = array( '#8a4baf', '#e26f56', '#007c89' );
+	$groups = array();
+
+	foreach ( $categories as $row ) {
+		$group = shawesome_c404_category_group( $row['category'] );
+
+		$groups[ $group ] = ( isset( $groups[ $group ] ) ? $groups[ $group ] : 0 ) + (int) $row['hits'];
+	}
+
+	arsort( $groups );
+
+	$segments = array();
+	foreach ( $groups as $group => $hits ) {
+		if ( isset( $fixed[ $group ] ) || $extra ) {
+			$segments[ $group ] = array(
+				'label' => 'rule' === $group ? __( 'Path rule', 'shawesome-contextual-404' ) : shawesome_c404_category_label( $group ),
+				'hits'  => $hits,
+				'color' => isset( $fixed[ $group ] ) ? $fixed[ $group ] : array_shift( $extra ),
+			);
+		} else {
+			$segments['other'] = array(
+				'label' => __( 'Other categories', 'shawesome-contextual-404' ),
+				'hits'  => ( isset( $segments['other'] ) ? $segments['other']['hits'] : 0 ) + $hits,
+				'color' => '#8c8f94',
+			);
+		}
+	}
+
+	return $segments;
+}
+
+/**
+ * Render the total, the stacked bar and its legend. The legend carries the
+ * numbers, so the bar is hidden from screen readers.
+ *
+ * @param array[] $categories Rows with category and hits.
+ */
+function shawesome_c404_render_overview( $categories ) {
+	$segments = shawesome_c404_chart_segments( $categories );
+	$total    = (int) array_sum( wp_list_pluck( $segments, 'hits' ) );
 
 	if ( ! $total ) {
 		echo '<p>' . esc_html__( 'No 404 errors recorded.', 'shawesome-contextual-404' ) . '</p>';
 		return;
 	}
-
-	$slices = shawesome_c404_chart_slices( $categories );
-	$offset = 0;
-	/* translators: %s: number of 404 errors */
-	$summary = sprintf( __( 'Total: %s', 'shawesome-contextual-404' ), number_format_i18n( $total ) );
 	?>
-	<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;">
-		<svg viewBox="0 0 100 100" width="140" height="140" role="img" aria-label="<?php echo esc_attr( $summary ); ?>" style="flex:none;">
-			<?php foreach ( $slices as $slice ) : ?>
-				<?php $title = $slice['label'] . ': ' . number_format_i18n( $slice['hits'] ); ?>
-				<?php if ( 1 === count( $slices ) ) : ?>
-					<circle cx="50" cy="50" r="49.8" fill="<?php echo esc_attr( $slice['color'] ); ?>"><title><?php echo esc_html( $title ); ?></title></circle>
-				<?php else : ?>
-					<?php $end = $offset + $slice['hits'] / $total; ?>
-					<path d="<?php echo esc_attr( shawesome_c404_slice_path( $offset, $end ) ); ?>" fill="<?php echo esc_attr( $slice['color'] ); ?>" stroke="<?php echo esc_attr( $slice['color'] ); ?>" stroke-width="0.3" stroke-linejoin="round"><title><?php echo esc_html( $title ); ?></title></path>
-					<?php $offset = $end; ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</svg>
-		<div style="flex:1;min-width:180px;">
-			<ul style="margin:0;">
-				<?php foreach ( $slices as $slice ) : ?>
-					<li style="display:flex;gap:8px;align-items:center;margin:0 0 4px;">
-						<span aria-hidden="true" style="flex:none;width:12px;height:12px;border-radius:2px;background:<?php echo esc_attr( $slice['color'] ); ?>;"></span>
-						<span style="flex:1;overflow-wrap:anywhere;"><?php echo esc_html( $slice['label'] ); ?></span>
-						<span style="font-variant-numeric:tabular-nums;"><?php echo esc_html( number_format_i18n( $slice['hits'] ) ); ?> (<?php echo esc_html( number_format_i18n( 100 * $slice['hits'] / $total ) ); ?>&nbsp;%)</span>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-			<p style="margin:8px 0 0;"><strong><?php echo esc_html( $summary ); ?></strong></p>
-		</div>
+	<p class="sc404-total"><strong><?php echo esc_html( number_format_i18n( $total ) ); ?></strong> <?php esc_html_e( '404 errors', 'shawesome-contextual-404' ); ?></p>
+	<div class="sc404-bar" aria-hidden="true">
+		<?php foreach ( $segments as $segment ) : ?>
+			<span style="<?php echo esc_attr( sprintf( 'width:%.3F%%;background:%s', 100 * $segment['hits'] / $total, $segment['color'] ) ); ?>"></span>
+		<?php endforeach; ?>
 	</div>
+	<ul class="sc404-legend">
+		<?php foreach ( $segments as $segment ) : ?>
+			<li>
+				<span class="sc404-swatch" style="<?php echo esc_attr( 'background:' . $segment['color'] ); ?>" aria-hidden="true"></span>
+				<span><?php echo esc_html( $segment['label'] ); ?></span>
+				<span class="sc404-num"><?php echo esc_html( number_format_i18n( $segment['hits'] ) . ' · ' . number_format_i18n( 100 * $segment['hits'] / $total ) . ' %' ); ?></span>
+			</li>
+		<?php endforeach; ?>
+	</ul>
 	<?php
 }
 
@@ -211,66 +204,104 @@ function shawesome_c404_render_log() {
 		$order   = 'desc';
 	}
 
-	$order    = 'desc' === $order ? 'desc' : 'asc';
-	$urls     = shawesome_c404_sort_urls( shawesome_c404_get_urls( $month, 100 ), $orderby, $order );
-	$settings = shawesome_c404_get_settings();
+	$order      = 'desc' === $order ? 'desc' : 'asc';
+	$categories = shawesome_c404_get_categories( $month );
+	$segments   = shawesome_c404_chart_segments( $categories );
+	$urls       = shawesome_c404_sort_urls( shawesome_c404_get_urls( $month, 100 ), $orderby, $order );
+	$settings   = shawesome_c404_get_settings();
 	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( '404 Log', 'shawesome-contextual-404' ); ?></h1>
-
-		<?php if ( ! $settings['logging'] ) : ?>
-			<div class="notice notice-warning inline"><p><?php esc_html_e( 'Counting is switched off, so no new 404 errors are recorded.', 'shawesome-contextual-404' ); ?></p></div>
-		<?php endif; ?>
-
-		<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>">
+	<div class="sc404-section-head">
+		<div>
+			<h2><?php esc_html_e( '404 Log', 'shawesome-contextual-404' ); ?></h2>
+			<p><?php esc_html_e( 'Which category caught the requests that were not found?', 'shawesome-contextual-404' ); ?></p>
+		</div>
+		<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" id="sc404-month-form">
 			<input type="hidden" name="page" value="shawesome-c404">
 			<input type="hidden" name="tab" value="log">
 			<input type="hidden" name="orderby" value="<?php echo esc_attr( $orderby ); ?>">
 			<input type="hidden" name="order" value="<?php echo esc_attr( $order ); ?>">
-			<label for="shawesome-c404-month"><?php esc_html_e( 'Month', 'shawesome-contextual-404' ); ?></label>
-			<select name="month" id="shawesome-c404-month">
+			<label class="screen-reader-text" for="sc404-month"><?php esc_html_e( 'Month', 'shawesome-contextual-404' ); ?></label>
+			<select name="month" id="sc404-month">
 				<?php foreach ( $months as $value => $label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $month, $value ); ?>><?php echo esc_html( $label ); ?></option>
+					<option value="<?php echo esc_attr( (string) $value ); ?>" <?php selected( $month, $value ); ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
 			</select>
-			<?php submit_button( __( 'Show', 'shawesome-contextual-404' ), 'secondary', '', false ); ?>
+			<noscript><?php submit_button( __( 'Show', 'shawesome-contextual-404' ), 'secondary', '', false ); ?></noscript>
 		</form>
-
-		<div style="margin:16px 0;max-width:600px;">
-			<?php shawesome_c404_render_chart( shawesome_c404_get_categories( $month ) ); ?>
-		</div>
-
-		<?php if ( $urls ) : ?>
-			<h2><?php esc_html_e( 'Most frequent URLs', 'shawesome-contextual-404' ); ?></h2>
-			<p class="description"><?php esc_html_e( 'Shows the 100 most frequent URLs. Sorting only changes the order of these URLs.', 'shawesome-contextual-404' ); ?></p>
-			<table class="widefat striped">
-				<thead>
-					<tr>
-						<?php
-						shawesome_c404_render_sort_header( 'path', __( 'URL', 'shawesome-contextual-404' ), $month, $orderby, $order );
-						shawesome_c404_render_sort_header( 'category', __( 'Category', 'shawesome-contextual-404' ), $month, $orderby, $order );
-						shawesome_c404_render_sort_header( 'hits', __( 'Hits', 'shawesome-contextual-404' ), $month, $orderby, $order );
-						?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ( $urls as $row ) : ?>
-						<tr>
-							<td>
-								<?php if ( '' === $row['path'] ) : ?>
-									<em><?php esc_html_e( 'Other URLs', 'shawesome-contextual-404' ); ?></em>
-								<?php else : ?>
-									<code><?php echo esc_html( '/' . $row['path'] ); ?></code>
-								<?php endif; ?>
-							</td>
-							<td><?php echo esc_html( shawesome_c404_category_label( $row['category'] ) ); ?></td>
-							<td><?php echo esc_html( number_format_i18n( (int) $row['hits'] ) ); ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		<?php endif; ?>
 	</div>
+
+	<?php if ( ! $settings['logging'] ) : ?>
+		<div class="notice notice-warning inline"><p><?php esc_html_e( 'Counting is switched off, so no new 404 errors are recorded.', 'shawesome-contextual-404' ); ?></p></div>
+	<?php endif; ?>
+
+	<section class="sc404-card">
+		<div class="sc404-card__body">
+			<?php shawesome_c404_render_overview( $categories ); ?>
+		</div>
+	</section>
+
+	<?php if ( $urls ) : ?>
+		<section class="sc404-card">
+			<?php shawesome_c404_render_card_head( __( 'Most frequent URLs', 'shawesome-contextual-404' ), __( 'The 100 most frequent. Frequent URLs in “Default” are candidates for a path rule.', 'shawesome-contextual-404' ) ); ?>
+			<div class="sc404-table-wrap">
+				<table class="sc404-urls">
+					<thead>
+						<tr>
+							<?php
+							shawesome_c404_render_sort_header( 'path', __( 'URL', 'shawesome-contextual-404' ), $month, $orderby, $order );
+							shawesome_c404_render_sort_header( 'category', __( 'Category', 'shawesome-contextual-404' ), $month, $orderby, $order );
+							shawesome_c404_render_sort_header( 'hits', __( 'Hits', 'shawesome-contextual-404' ), $month, $orderby, $order );
+							?>
+							<td><span class="screen-reader-text"><?php esc_html_e( 'Actions', 'shawesome-contextual-404' ); ?></span></td>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $urls as $row ) : ?>
+							<?php
+							$group = shawesome_c404_category_group( $row['category'] );
+							$color = isset( $segments[ $group ] ) ? $segments[ $group ]['color'] : '#8c8f94';
+							$path  = '/' . rawurldecode( $row['path'] );
+							?>
+							<tr>
+								<td class="sc404-url">
+									<?php if ( '' === $row['path'] ) : ?>
+										<em><?php esc_html_e( 'Other URLs', 'shawesome-contextual-404' ); ?></em>
+									<?php else : ?>
+										<code title="<?php echo esc_attr( $path ); ?>"><?php echo esc_html( '/' . $row['path'] ); ?></code>
+									<?php endif; ?>
+								</td>
+								<td><span class="sc404-swatch sc404-swatch--dot" style="<?php echo esc_attr( 'background:' . $color ); ?>" aria-hidden="true"></span><?php echo esc_html( shawesome_c404_category_label( $row['category'] ) ); ?></td>
+								<td class="sc404-num"><?php echo esc_html( number_format_i18n( (int) $row['hits'] ) ); ?></td>
+								<td>
+									<?php if ( '' !== $row['path'] ) : ?>
+										<?php
+										$link = shawesome_c404_page_url(
+											array(
+												'rule' => rawurlencode( (string) strtok( $path, '/' ) ),
+												'test' => rawurlencode( $path ),
+											)
+										);
+										/* translators: %s: requested path */
+										$label = sprintf( __( 'Add a path rule for %s', 'shawesome-contextual-404' ), $path );
+										?>
+										<a href="<?php echo esc_url( $link ); ?>" class="button button-small" aria-label="<?php echo esc_attr( $label ); ?>"><?php esc_html_e( '+ Path rule', 'shawesome-contextual-404' ); ?></a>
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	<?php endif; ?>
+
+	<section class="sc404-card">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php?action=shawesome_c404_clear_log' ) ); ?>" class="sc404-card__foot sc404-clear">
+			<?php wp_nonce_field( 'shawesome_c404_clear_log' ); ?>
+			<p><?php esc_html_e( 'Deletes the counted 404 errors of all months. This cannot be undone.', 'shawesome-contextual-404' ); ?></p>
+			<button type="submit" class="button sc404-button-danger" data-confirm="<?php esc_attr_e( 'Delete the statistics of all months? This cannot be undone.', 'shawesome-contextual-404' ); ?>"><?php esc_html_e( 'Delete statistics', 'shawesome-contextual-404' ); ?></button>
+		</form>
+	</section>
 	<?php
 }
 
@@ -292,7 +323,7 @@ function shawesome_c404_render_dashboard_widget() {
 	$month  = (int) key( $months );
 	?>
 	<p><strong><?php echo esc_html( $months[ $month ] ); ?></strong></p>
-	<?php shawesome_c404_render_chart( shawesome_c404_get_categories( $month ) ); ?>
+	<?php shawesome_c404_render_overview( shawesome_c404_get_categories( $month ) ); ?>
 	<p><a href="<?php echo esc_url( shawesome_c404_page_url( array( 'tab' => 'log' ) ) ); ?>"><?php esc_html_e( 'View all months', 'shawesome-contextual-404' ); ?></a></p>
 	<?php
 }
