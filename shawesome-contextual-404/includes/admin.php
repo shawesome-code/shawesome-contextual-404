@@ -458,7 +458,8 @@ function shawesome_c404_describe_url( $url, $settings ) {
 	$segment  = strtok( $request, '/' );
 	$language = false !== $segment && in_array( $segment, array_map( 'strtolower', shawesome_c404_languages() ), true ) ? $segment : '';
 	$match    = shawesome_c404_find_match( shawesome_c404_strip_language( $request, $language ), shawesome_c404_query_vars_from_path( $request ), $settings );
-	$page     = $match['page'] ? get_the_title( $match['page'] ) : __( 'Theme 404 page', 'shawesome-contextual-404' );
+	// Without a language prefix, the URL is in the default language.
+	$page = $match['page'] ? get_the_title( shawesome_c404_translate( $match['page'], '' !== $language ? $language : shawesome_c404_default_language() ) ) : __( 'Theme 404 page', 'shawesome-contextual-404' );
 
 	return sprintf(
 		/* translators: 1: category such as "Posts" or "Rule: shop", 2: title of the 404 page */

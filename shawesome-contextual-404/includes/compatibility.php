@@ -38,16 +38,30 @@ function shawesome_c404_languages() {
 }
 
 /**
- * Translation of a 404 page into the current language.
+ * Default language as used in URLs.
  *
- * @param int $page_id 404 page.
+ * @return string Language slug, empty without a multilingual plugin.
+ */
+function shawesome_c404_default_language() {
+	if ( function_exists( 'pll_default_language' ) ) {
+		return (string) pll_default_language();
+	}
+
+	return (string) apply_filters( 'wpml_default_language', '' );
+}
+
+/**
+ * Translation of a 404 page.
+ *
+ * @param int    $page_id  404 page.
+ * @param string $language Language slug, empty for the current language.
  * @return int The published translation, otherwise the page itself.
  */
-function shawesome_c404_translate( $page_id ) {
+function shawesome_c404_translate( $page_id, $language = '' ) {
 	if ( function_exists( 'pll_get_post' ) ) {
-		$translated = (int) pll_get_post( $page_id );
+		$translated = (int) pll_get_post( $page_id, $language );
 	} else {
-		$translated = (int) apply_filters( 'wpml_object_id', $page_id, SHAWESOME_C404_POST_TYPE, true );
+		$translated = (int) apply_filters( 'wpml_object_id', $page_id, SHAWESOME_C404_POST_TYPE, true, '' === $language ? null : $language );
 	}
 
 	return 'publish' === get_post_status( $translated ) ? $translated : $page_id;
