@@ -44,7 +44,7 @@ A table holds one row per month and URL with a counter, so repeated errors do no
 - WordPress 7.1+
 - PHP 7.4+
 
-The admin interface is available in English, German, Spanish and French.
+The interface is in English. Translations will come from [translate.wordpress.org](https://translate.wordpress.org/) once the plugin is listed in the directory.
 
 ## Installation
 
@@ -52,7 +52,7 @@ Copy the folder `shawesome-contextual-404/` to `wp-content/plugins/` (or upload 
 
 ## Repository layout
 
-- `shawesome-contextual-404/` – the plugin (translations in `languages/`, shared admin code as a git subtree in `includes/shawesome-wordpress-admin/`)
+- `shawesome-contextual-404/` – the plugin (translation template in `languages/`, shared admin code as a git subtree in `includes/shawesome-wordpress-admin/`)
 - `.wordpress-org/` – plugin directory assets (banners, icons)
 
 ## License

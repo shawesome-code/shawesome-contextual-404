@@ -13,6 +13,8 @@
  * Text Domain:         shawesome-contextual-404
  * Domain Path:         /languages
  *
+ * Copyright © shawesome.
+ *
  * @package Shawesome_Contextual_404
  */
 

@@ -14,16 +14,6 @@ require_once __DIR__ . '/shawesome-wordpress-admin/loader.php';
 require_once __DIR__ . '/statistics.php';
 
 /**
- * Load the bundled translations. Translations from translate.wordpress.org
- * in wp-content/languages/plugins/ take precedence. Runs before the post type
- * is registered, whose labels need them.
- */
-function shawesome_c404_load_textdomain() {
-	load_plugin_textdomain( 'shawesome-contextual-404', false, dirname( plugin_basename( dirname( __DIR__ ) . '/shawesome-contextual-404.php' ) ) . '/languages' );
-}
-add_action( 'init', 'shawesome_c404_load_textdomain', 5 );
-
-/**
  * URL of the settings page.
  *
  * @param array $args Query arguments.
@@ -57,7 +47,7 @@ add_action( 'admin_menu', 'shawesome_c404_admin_menu' );
 function shawesome_c404_enqueue_scripts() {
 	wp_enqueue_script(
 		'shawesome-c404-admin',
-		plugins_url( 'assets/admin.js', dirname( __DIR__ ) . '/shawesome-contextual-404.php' ),
+		plugins_url( 'includes/admin.js', dirname( __DIR__ ) . '/shawesome-contextual-404.php' ),
 		array( 'jquery', 'jquery-ui-sortable' ),
 		SHAWESOME_C404_VERSION,
 		true

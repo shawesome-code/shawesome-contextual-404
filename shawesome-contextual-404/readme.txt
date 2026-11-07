@@ -75,10 +75,6 @@ With the permalink structure `/%postname%/` they cannot be told apart, see the d
 
 Only published 404 pages are shown. If an existing redirect applies to the URL, it takes precedence.
 
-= Which languages are included? =
-
-English, German (informal and formal), Spanish and French.
-
 = What happens on uninstall? =
 
 The settings, all 404 pages and the statistics are deleted.

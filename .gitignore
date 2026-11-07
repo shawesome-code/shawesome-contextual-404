@@ -21,5 +21,8 @@ vendor/
 # Build-Artefakte (Plugin-ZIPs zum Upload)
 *.zip
 
-# Pläne und Todo-Listen
-/ideas/
+# Pläne, Todo-Listen und Design-Dateien
+/project
+
+# Playwright MCP output (snapshots, screenshots)
+/.playwright-mcp/
