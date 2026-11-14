@@ -261,13 +261,15 @@ function shawesome_c404_render_log() {
 							$group = shawesome_c404_category_group( $row['category'] );
 							$color = isset( $segments[ $group ] ) ? $segments[ $group ]['color'] : '#8c8f94';
 							$path  = '/' . rawurldecode( $row['path'] );
+							// Invalid UTF-8 and control characters stay encoded.
+							$shown = '' !== wp_check_invalid_utf8( $path ) && ! preg_match( '/[\x00-\x1F\x7F]/', $path ) ? $path : '/' . $row['path'];
 							?>
 							<tr>
 								<td class="sc404-url">
 									<?php if ( '' === $row['path'] ) : ?>
 										<em><?php esc_html_e( 'Other URLs', 'shawesome-contextual-404' ); ?></em>
 									<?php else : ?>
-										<code title="<?php echo esc_attr( $path ); ?>"><?php echo esc_html( '/' . $row['path'] ); ?></code>
+										<code title="<?php echo esc_attr( '/' . $row['path'] ); ?>"><?php echo esc_html( $shown ); ?></code>
 									<?php endif; ?>
 								</td>
 								<td><span class="sc404-swatch sc404-swatch--dot" style="<?php echo esc_attr( 'background:' . $color ); ?>" aria-hidden="true"></span><?php echo esc_html( shawesome_c404_category_label( $row['category'] ) ); ?></td>
@@ -282,7 +284,7 @@ function shawesome_c404_render_log() {
 											)
 										);
 										/* translators: %s: requested path */
-										$label = sprintf( __( 'Add a path rule for %s', 'shawesome-contextual-404' ), $path );
+										$label = sprintf( __( 'Add a path rule for %s', 'shawesome-contextual-404' ), $shown );
 										?>
 										<a href="<?php echo esc_url( $link ); ?>" class="button button-small" aria-label="<?php echo esc_attr( $label ); ?>"><?php esc_html_e( '+ Path rule', 'shawesome-contextual-404' ); ?></a>
 									<?php endif; ?>
