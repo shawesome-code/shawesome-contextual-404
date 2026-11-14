@@ -76,6 +76,10 @@ Only published 404 pages are shown. If an existing redirect applies to the URL, 
 
 Yes. Each site has its own 404 pages, rules and statistics. On uninstall, the data of every site is removed.
 
+= Does it work with WooCommerce? =
+
+Yes. Missing products, product categories, tags and attributes and URLs below the shop page get the 404 page of the post type Products, also with the product base `/shop/%product_cat%/`. URLs below Cart, Checkout and My Account belong to Pages, like any URL below an existing page.
+
 = What happens on uninstall? =
 
 The settings, all 404 pages and the statistics are deleted.
