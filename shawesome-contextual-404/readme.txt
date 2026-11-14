@@ -72,9 +72,23 @@ With the permalink structure `/%postname%/` they cannot be told apart, see the d
 
 Only published 404 pages are shown. If an existing redirect applies to the URL, it takes precedence.
 
+= Does it work in a multisite network? =
+
+Yes. Each site has its own 404 pages, rules and statistics. On uninstall, the data of every site is removed.
+
 = What happens on uninstall? =
 
 The settings, all 404 pages and the statistics are deleted.
+
+== Screenshots ==
+
+1. Settings: a 404 page for every public post type and a default, path rules by prefix or regular expression, and the URL test showing which 404 page a URL gets.
+2. 404 Log: errors by category and the most frequent URLs, with a shortcut to a new path rule.
+3. The list of 404 pages with the column "Used for".
+4. Dashboard widget with the 404 errors of the current month.
+5. Front end: the 404 page of a path rule for a shop URL.
+6. Front end: the 404 page for posts.
+7. Front end: the 404 page for pages.
 
 == Changelog ==
 

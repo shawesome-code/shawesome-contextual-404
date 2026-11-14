@@ -641,13 +641,23 @@ function shawesome_c404_render_settings( $saved ) {
 		<section class="sc404-card">
 			<?php shawesome_c404_render_card_head( __( '1 · By post type', 'shawesome-contextual-404' ), __( 'Applies to URLs below the URL prefix, the archive and the taxonomies of a post type.', 'shawesome-contextual-404' ) ); ?>
 			<div class="sc404-types">
-				<?php foreach ( shawesome_c404_post_types() as $name => $object ) : ?>
+				<?php
+				$prefixes = shawesome_c404_post_type_prefixes();
+				foreach ( shawesome_c404_post_types() as $name => $object ) :
+					$prefix = array_search( $name, $prefixes, true );
+					if ( isset( $descriptions[ $name ] ) ) {
+						$description = $descriptions[ $name ];
+					} elseif ( false !== $prefix ) {
+						/* translators: %s: URL prefix of the post type, e.g. events. */
+						$description = sprintf( __( 'URLs below the URL prefix, the archive and the taxonomies, e.g. /%s/xyz.', 'shawesome-contextual-404' ), $prefix );
+					} else {
+						$description = __( 'URLs below the URL prefix, the archive and the taxonomies.', 'shawesome-contextual-404' );
+					}
+					?>
 					<div class="sc404-type">
 						<div>
 							<label for="sc404-type-<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $object->labels->name ); ?></label>
-							<?php if ( isset( $descriptions[ $name ] ) ) : ?>
-								<p><?php echo esc_html( $descriptions[ $name ] ); ?></p>
-							<?php endif; ?>
+							<p><?php echo esc_html( $description ); ?></p>
 						</div>
 						<?php shawesome_c404_render_select( 'post_types[' . $name . ']', isset( $settings['post_types'][ $name ] ) ? (int) $settings['post_types'][ $name ] : 0, $pages, __( 'Same as “Default”', 'shawesome-contextual-404' ), '', 'sc404-type-' . $name ); ?>
 					</div>

@@ -59,7 +59,7 @@ msgid "Settings"
 msgstr ""
 
 #: includes/admin.php:146
-#: includes/admin.php:711
+#: includes/admin.php:722
 #: includes/statistics.php:215
 msgid "404 Log"
 msgstr ""
@@ -77,7 +77,7 @@ msgid "Your own content, shown instead of the 404 page of the theme. Where it ap
 msgstr ""
 
 #: includes/admin.php:234
-#: includes/admin.php:656
+#: includes/admin.php:667
 #: includes/statistics.php:33
 msgid "Default"
 msgstr ""
@@ -99,150 +99,160 @@ msgstr ""
 msgid "Sorry, you are not allowed to manage options for this site."
 msgstr ""
 
-#: includes/admin.php:461
-#: includes/admin.php:659
+#: includes/admin.php:462
+#: includes/admin.php:670
 msgid "Theme 404 page"
 msgstr ""
 
 #. translators: 1: category such as "Posts" or "Rule: shop", 2: title of the 404 page
-#: includes/admin.php:465
+#: includes/admin.php:466
 #, php-format
 msgid "%1$s → %2$s"
 msgstr ""
 
-#: includes/admin.php:538
+#: includes/admin.php:539
 msgid "Drag to sort"
 msgstr ""
 
-#: includes/admin.php:541
+#: includes/admin.php:542
 msgid "Type"
 msgstr ""
 
-#: includes/admin.php:542
+#: includes/admin.php:543
 msgid "Prefix"
 msgstr ""
 
-#: includes/admin.php:543
+#: includes/admin.php:544
 msgid "Regex"
 msgstr ""
 
-#: includes/admin.php:547
+#: includes/admin.php:548
 msgid "Pattern"
 msgstr ""
 
-#: includes/admin.php:549
+#: includes/admin.php:550
 msgid "Select page…"
 msgstr ""
 
-#: includes/admin.php:549
+#: includes/admin.php:550
 msgid "404 page"
 msgstr ""
 
-#: includes/admin.php:551
+#: includes/admin.php:552
 msgid "Move up"
 msgstr ""
 
-#: includes/admin.php:552
+#: includes/admin.php:553
 msgid "Move down"
 msgstr ""
 
-#: includes/admin.php:553
+#: includes/admin.php:554
 msgid "Remove"
 msgstr ""
 
-#: includes/admin.php:573
+#: includes/admin.php:574
 msgid "Settings saved."
 msgstr ""
 
-#: includes/admin.php:574
+#: includes/admin.php:575
 msgid "Settings saved. Path rules with an invalid regular expression or without a 404 page were removed."
 msgstr ""
 
-#: includes/admin.php:575
+#: includes/admin.php:576
 msgid "Statistics deleted."
 msgstr ""
 
-#: includes/admin.php:616
+#: includes/admin.php:617
 msgid "Categories, tags, date archives and post URLs the permalink structure identifies, e.g. /2026/10/xyz."
 msgstr ""
 
-#: includes/admin.php:617
+#: includes/admin.php:618
 msgid "URLs below an existing page, e.g. /about/xyz."
 msgstr ""
 
-#: includes/admin.php:633
+#: includes/admin.php:634
 msgid "Create your first 404 page"
 msgstr ""
 
-#: includes/admin.php:641
+#: includes/admin.php:642
 msgid "1 · By post type"
 msgstr ""
 
-#: includes/admin.php:641
+#: includes/admin.php:642
 msgid "Applies to URLs below the URL prefix, the archive and the taxonomies of a post type."
 msgstr ""
 
-#: includes/admin.php:651
+#. translators: %s: URL prefix of the post type, e.g. events.
+#: includes/admin.php:652
+#, php-format
+msgid "URLs below the URL prefix, the archive and the taxonomies, e.g. /%s/xyz."
+msgstr ""
+
+#: includes/admin.php:654
+msgid "URLs below the URL prefix, the archive and the taxonomies."
+msgstr ""
+
+#: includes/admin.php:662
 msgid "Same as “Default”"
 msgstr ""
 
-#: includes/admin.php:657
+#: includes/admin.php:668
 msgid "Everything that cannot be assigned to a post type – with the permalink structure /%postname%/ e.g. /xyz."
 msgstr ""
 
-#: includes/admin.php:667
+#: includes/admin.php:678
 msgid "2 · Path rules"
 msgstr ""
 
-#: includes/admin.php:668
+#: includes/admin.php:679
 msgid "Take precedence over post types. Checked from top to bottom – the first match wins. The language prefix is not part of the path."
 msgstr ""
 
-#: includes/admin.php:670
+#: includes/admin.php:681
 msgid "+ Add rule"
 msgstr ""
 
 #. translators: 1: example prefix, 2: example path, 3: example regular expression
-#: includes/admin.php:678
+#: includes/admin.php:689
 #, php-format
 msgid "No rules yet. Example: the prefix %1$s matches %2$s and everything below it; the regular expression %3$s is entered without delimiters and ignores case."
 msgstr ""
 
-#: includes/admin.php:696
+#: includes/admin.php:707
 msgid "Test URL"
 msgstr ""
 
-#: includes/admin.php:703
+#: includes/admin.php:714
 msgid "3 · Statistics"
 msgstr ""
 
-#: includes/admin.php:705
+#: includes/admin.php:716
 msgid "Count 404 errors"
 msgstr ""
 
 #. translators: %s: link to the tab 404 Log
-#: includes/admin.php:710
+#: includes/admin.php:721
 #, php-format
 msgid "Stores URL and category per month for the %s. No IP addresses."
 msgstr ""
 
-#: includes/admin.php:719
+#: includes/admin.php:730
 msgid "Unsaved changes"
 msgstr ""
 
-#: includes/admin.php:719
+#: includes/admin.php:730
 msgid "Saved"
 msgstr ""
 
-#: includes/admin.php:719
+#: includes/admin.php:730
 msgid "No changes"
 msgstr ""
 
-#: includes/admin.php:720
+#: includes/admin.php:731
 msgid "Discard"
 msgstr ""
 
-#: includes/admin.php:721
+#: includes/admin.php:732
 msgid "Save Changes"
 msgstr ""
 
